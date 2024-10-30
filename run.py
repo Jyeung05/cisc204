@@ -1,6 +1,7 @@
 
 from bauhaus import Encoding, proposition, constraint
 from bauhaus.utils import count_solutions, likelihood
+from characters import characters
 
 # These two lines make sure a faster SAT solver is used.
 from nnf import config
@@ -9,10 +10,44 @@ config.sat_backend = "kissat"
 # Encoding that will store all of your constraints
 E = Encoding()
 
+#starts the game
+def begin():
+    for name in characters:
+        characters[name] = {
+            'traits': characters[name],
+            'is_up': True  # Initialize all characters as 'up'
+        }
+# Now, characters dictionary looks like this:
+# {
+#     'Alex': {'traits': ['blond hair', 'male', 'glasses'], 'is_up': True},
+#     'Beth': {'traits': ['brown hair', 'female', 'hat'], 'is_up': True},
+#     # ...
+# }
+
+
+        
+
 # To create propositions, create classes for them first, annotated with "@proposition" and the Encoding
 @proposition(E)
-class BasicPropositions:
+class IsUp(object):
 
+    def __init__(self, person):
+        assert person in characters
+        self.up = characters[person]['is_up']
+
+    def _prop_name(self):
+        return f"A.{self.up}"
+
+@proposition(E)
+class CheckTrait:
+    def __init__(self, data):
+        self.data = data
+
+    def _prop_name(self):
+        return f"A.{self.data}"
+
+@proposition(E)
+class GuessCharacter:
     def __init__(self, data):
         self.data = data
 
