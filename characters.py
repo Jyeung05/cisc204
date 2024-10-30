@@ -1,7 +1,7 @@
 
 characters = {
     'Alex':['male', 'black_hair', 'hair', 'facial_hair', 'accessories', 'smiling', 'no_glasses'],
-    'Alfred': ['male', 'orange_hair', 'hair', 'has_facial_hair', 'no_accessories', 'not_smiling', 'no_glasses'],
+    'Alfred': ['male', 'orange_hair', 'hair', 'facial_hair', 'no_accessories', 'not_smiling', 'no_glasses'],
     'Anita' : ['female', 'blonde_hair', 'hair', 'no_facial_hair', 'accessories', 'smiling', 'no_glasses'],
     'Anne' : ['female', 'black_hair', 'hair', 'no_facial_hair', 'accessories', 'not_smiling', 'no_glasses'],
     'Bernard' : ['male', 'brown_hair', 'hair', 'no_facial_hair', 'accessories', 'not_smiling', 'no_glasses'],
@@ -28,4 +28,17 @@ characters = {
 
 
 
-    
+questions = [
+    ['male', 'glasses'],
+    ['female', 'glasses'],
+    ['blonde_hair', 'facial_hair'],
+    ['black_hair', 'no_hair'],
+    ['smiling', 'accessories'],
+    ['white_hair', 'no_facial_hair'],
+    ['male', 'not_smiling'],
+    ['brown_hair', 'facial_hair'],
+    ['male', 'no_hair'],
+    ['orange_hair', 'no_facial_hair'],
+    ['female', 'smiling'],
+    ['black_hair', 'facial_hair']
+]
