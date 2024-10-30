@@ -1,7 +1,7 @@
 
 characters = {
     'Alex':['male', 'black_hair', 'hair', 'facial_hair', 'accessories', 'smiling', 'no_glasses'],
-    'Alfred': ['male', 'orange_hair', 'hair', 'facial_hair', 'no_accessories', 'not_smiling', 'no_glasses'],
+    'Alfred': ['male', 'orange_hair', 'hair', 'has_facial_hair', 'no_accessories', 'not_smiling', 'no_glasses'],
     'Anita' : ['female', 'blonde_hair', 'hair', 'no_facial_hair', 'accessories', 'smiling', 'no_glasses'],
     'Anne' : ['female', 'black_hair', 'hair', 'no_facial_hair', 'accessories', 'not_smiling', 'no_glasses'],
     'Bernard' : ['male', 'brown_hair', 'hair', 'no_facial_hair', 'accessories', 'not_smiling', 'no_glasses'],
