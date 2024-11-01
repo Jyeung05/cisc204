@@ -3,6 +3,7 @@ from bauhaus import Encoding, proposition, constraint
 from bauhaus.utils import count_solutions, likelihood
 from characters import characters
 from characters import questions
+from characters import questions
 
 # These two lines make sure a faster SAT solver is used.
 from nnf import config
@@ -10,15 +11,39 @@ config.sat_backend = "kissat"
 
 # Encoding that will store all of your constraints
 E = Encoding()
-
+print('accwag')
 # variables to store the chosen characters
 character = None
+
+#starts the game
+def begin():
+    for name in characters:
+        characters[name] = {
+            'traits': characters[name],
+            'is_up': True  # Initialize all characters as 'up'
+        }
+# Now, characters dictionary looks like this:
+# {
+#     'Alex': {'traits': ['blond hair', 'male', 'glasses'], 'is_up': True},
+#     'Beth': {'traits': ['brown hair', 'female', 'hat'], 'is_up': True},
+#     # ...
+# }
 def remainingCharacters():
     remaining = []
     for i in range(len(characters)):
         if characters[i]['is_up'] == True:
             remaining.append(characters[i])
     return remaining
+
+def guessOrCheckTraits(): #asks the user if they want to guess a character or check for traits
+    a = input("Type g if you want to guess a character, type c if you want to check traits")
+    while a != 'g' or 'c':
+        if a == 'g':
+            pass
+        elif a == 'c':
+            pass
+        else:
+            print("invalid input, try again")
         
 
 # To create propositions, create classes for them first, annotated with "@proposition" and the Encoding
@@ -34,12 +59,9 @@ class IsUp(object):
 
 @proposition(E)
 class CheckTrait:
-    def __init__(self, person, guess1, guess2):
+    def __init__(self, person, guess):
         assert person in characters
-        a = [guess1, guess2]
-        b = [guess2, guess1]
-        assert a in questions
-        assert b in questions
+        assert guess in questions
         self.person = characters
         self.trait1 = guess1
         self.trait2 = guess2
@@ -91,5 +113,5 @@ if __name__ == "__main__":
     character = input("Choose your character (capitalise first letter): ")
     while character not in characters:
         character = input("Invalid character, please try again: ")
-
+ 
     
