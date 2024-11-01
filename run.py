@@ -1,9 +1,8 @@
 
 from bauhaus import Encoding, proposition, constraint
 from bauhaus.utils import count_solutions, likelihood
-from characters import characters
-from characters import questions
-from characters import questions
+from bauhaus.core import Or
+from characters import characters, questions
 
 # These two lines make sure a faster SAT solver is used.
 from nnf import config
@@ -17,10 +16,10 @@ character = None
 
 #starts the game
 def begin():
-    for name in characters:
+    for name in list(characters.keys()):
         characters[name] = {
             'traits': characters[name],
-            'is_up': True  # Initialize all characters as 'up'
+            'is_up': True
         }
 # Now, characters dictionary looks like this:
 # {
@@ -30,21 +29,42 @@ def begin():
 # }
 def remainingCharacters():
     remaining = []
-    for i in range(len(characters)):
-        if characters[i]['is_up'] == True:
-            remaining.append(characters[i])
+    for character, attributes in characters.items():
+        if attributes['is_up']:
+            remaining.append(character)
     return remaining
 
 def guessOrCheckTraits(): #asks the user if they want to guess a character or check for traits
     a = input("Type g if you want to guess a character, type c if you want to check traits")
     while a != 'g' or 'c':
         if a == 'g':
-            pass
+            guess_character()
         elif a == 'c':
-            pass
+            checkTraits()
+            break
         else:
             print("invalid input, try again")
-        
+
+def checkTraits():
+    print("Available questions:")
+    for i, q in enumerate(questions, 1):
+        print(f"{i}. {q}")
+    selection = input("Select a question by number: ")
+    selection = int(selection)
+    if 1 <= selection <= len(questions):
+        selected_question = questions[selection - 1]
+        print(f"You selected: {selected_question}")
+
+    else:
+        print("Invalid selection.")
+
+def guess_character():
+    guess = input("Enter the name of the character you want to guess (Case sensitive): ")
+    if guess in characters: #will be changed eventually to check if it's the right character
+        print(f"You guessed: {guess}")
+        #...
+    else:
+        print("Invalid character name.")
 
 # To create propositions, create classes for them first, annotated with "@proposition" and the Encoding
 @proposition(E)
@@ -52,22 +72,23 @@ class IsUp(object):
 
     def __init__(self, person):
         assert person in characters
-        self.up = characters[person]['is_up']
+        self.person = person
 
     def _prop_name(self):
-        return f"A.{self.up}"
+        return f"A.{self.person}.IsUp"
 
 @proposition(E)
 class CheckTrait:
-    def __init__(self, person, guess):
+    def __init__(self, person, trait):
         assert person in characters
-        assert guess in questions
-        self.person = characters
-        self.trait1 = guess1
-        self.trait2 = guess2
+        # flat_questions = [item for sublist in questions for item in sublist]
+        # assert trait in flat_questions
+        self.person = person
+        self.trait = trait
 
     def _prop_name(self):
-        return f"A.{self.data}"
+        return f"A.{self.person}.HasTrait.{self.trait}"
+
 
 @proposition(E)
 class GuessCharacter:
@@ -84,34 +105,75 @@ class GuessCharacter:
 #  This restriction is fairly minimal, and if there is any concern, reach out to the teaching staff to clarify
 #  what the expectations are.
 def example_theory():
-    # For any two distinct characters c1 and c2, and all traits t, no character can have all the same traits. 
+    # For any two distinct characters c1 and c2, they cannot both be active and have all the same traits. 
     for c1 in characters:
         for c2 in characters:
-            if c1 in characters and c2 in characters:
-                if characters[c1] == characters[c2]: # not sure if i am properly creating this constraint
-                    E.add_constraint(~(CheckTrait&~CheckTrait))
+            if c1 != c2: #So it won't compare a character with itself
+                if characters[c1] == characters[c2]: 
+                    E.add_constraint(~(IsUp(c1) & IsUp(c2))) #they both can't be up if 2 different character traits match
 
     # For two distinct characters c1 and c2, each question posed by a player for a given trait t must distinguish 
     # at least one character c1 from the other c2. Only for characters that are up.
 
+    for c1 in characters:
+        for c2 in characters:
+            if c1 != c2: 
+                for i, question in enumerate(questions, 1):
+                    # Generate the OR condition for distinguishing traits
+                    distinguishing_conditions = []
+                    for trait in question:
+                        if trait not in [item for sublist in questions for item in sublist]:
+                            print(f"Warning: Trait '{trait}' in question {i} is invalid.")
+                            continue
+                        # (c1 has trait AND c2 does not) OR (c1 does not have trait AND c2 has trait)
+                        condition = (CheckTrait(c1, trait) & ~CheckTrait(c2, trait)) | (~CheckTrait(c1, trait) & CheckTrait(c2, trait))
+                        distinguishing_conditions.append(condition)
+                    
+                    if distinguishing_conditions:
+                        # Combine all distinguishing conditions with OR
+                        distinguishing_or = Or(*distinguishing_conditions)
+                        
+                        # Add the implication: If both are up, then distinguishing_or must be true
+                        E.add_constraint(~(IsUp(c1) & IsUp(c2)) | distinguishing_or)
+                    else:
+                        # If no valid traits to distinguish, enforce that both cannot be active
+                        E.add_constraint(~(IsUp(c1) & IsUp(c2)))
 
-    #For any character c and trait t, if a character has a trait then they cannot simultaneously have its negation.
-
-
+    #No character c can have both a trait and its negation
+    for c in characters:
+        traits = characters[c]['traits']
+        for trait in traits:
+            if trait.startswith('no_') or trait.startswith('not_'):
+                # Find positive form of the trait
+                if trait.startswith('no_'):
+                    pos_trait = trait[3:]
+                elif trait.startswith('not_'):
+                    pos_trait = trait[4:]
+                else:
+                    continue
+                # character cannot have both the trait and its negation
+                E.add_constraint(~(CheckTrait(c, trait) & CheckTrait(c, pos_trait)))
+    
     return E
 
 
 if __name__ == "__main__":
+    begin()
+
     T = example_theory()
     # Don't compile until you're finished adding all your constraints!
     T = T.compile()
     # After compilation (and only after), you can check some of the properties
     # of your model:
     
-    begin()
-    print(remainingCharacters())
-    character = input("Choose your character (capitalise first letter): ")
-    while character not in characters:
-        character = input("Invalid character, please try again: ")
- 
-    
+    guessOrCheckTraits()
+
+"""
+TO DO:
+
+- We need logic to generate a random character to be guessed
+- Add check trait logic, right now it only allows you to select a question
+- Put everything together in guess character function, it first needs a character that can be guessed
+- More constraints
+- Complaining about trait not being in questions somehow, commented out so code can run
+"""

@@ -9,7 +9,7 @@ characters = {
     'Charles' : ['male', 'blonde_hair', 'hair', 'facial_hair', 'no_accessories', 'smiling', 'no_glasses'],
     'Claire' : ['female', 'blonde_hair', 'hair' , 'no_facial_hair', 'accessories', 'smiling', 'glasses'], 
     'David': ['male', 'blonde_hair', 'hair', 'facial_hair', 'no_accessories', 'smiling', 'no_glasses'], 
-    'Eric': ['male', 'blonde_hair', 'hair', 'no_facial_hair', 'accessories', 'smiling', 'no_glasses', 'no_glasses'], 
+    'Eric': ['male', 'blonde_hair', 'hair', 'no_facial_hair', 'accessories', 'smiling', 'no_glasses'], 
     'Frans': ['male', 'orange_hair', 'hair', 'no_facial_hair', 'no_accessories', 'smiling', 'no_glasses'], 
     'George': ['male', 'white_hair', 'hair', 'no_facial_hair', 'accessories', 'not_smiling', 'no_glasses'], 
     'Herman': ['male', 'orange_hair', 'no_hair', 'no_facial_hair', 'no_accessories', 'not_smiling', 'no_glasses'], 
@@ -19,7 +19,7 @@ characters = {
     'Paul': ['male', 'white_hair', 'hair', 'no_facial_hair', 'no_accessories', 'smiling', 'glasses'], 
     'Peter': ['male', 'white_hair', 'hair', 'no_facial_hair', 'no_accessories', 'smiling', 'no_glasses'], 
     'Philip': ['male', 'black_hair', 'hair', 'facial_hair', 'no_accessories', 'smiling', 'no_glasses'], 
-    'Richard': ['male', 'brown_hair', 'no_hair', 'facial_hair', 'no_accessories', 'smiling' 'no_glasses'], 
+    'Richard': ['male', 'brown_hair', 'no_hair', 'facial_hair', 'no_accessories', 'smiling', 'no_glasses'], 
     'Robert': ['male', 'brown_hair', 'hair', 'no_facial_hair', 'no_accessories', 'not_smiling', 'no_glasses'], 
     'Sam': ['male', 'white_hair', 'no_hair', 'no_facial_hair', 'no_accessories', 'smiling', 'glasses'], 
     'Susan': ['female', 'white_hair', 'hair', 'no_facial_hair', 'no_accessories', 'smiling', 'no_glasses'], 
@@ -40,5 +40,5 @@ questions = [
     ['male', 'no_hair'],
     ['orange_hair', 'no_facial_hair'],
     ['female', 'smiling'],
-    ['black_hair', 'facial_hair']
+    ['black_hair', 'facial_hair'],
 ]
