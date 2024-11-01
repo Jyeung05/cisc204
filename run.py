@@ -2,7 +2,7 @@
 from bauhaus import Encoding, proposition, constraint
 from bauhaus.utils import count_solutions, likelihood
 from characters import characters
-import random
+from characters import questions
 
 # These two lines make sure a faster SAT solver is used.
 from nnf import config
@@ -10,10 +10,10 @@ config.sat_backend = "kissat"
 
 # Encoding that will store all of your constraints
 E = Encoding()
-
+print('accwag')
 # variables to store the chosen characters
-playerCharacter = None
-botCharacter = None
+characterChosen = None
+
 
 #starts the game
 def begin():
@@ -28,12 +28,23 @@ def begin():
 #     'Beth': {'traits': ['brown hair', 'female', 'hat'], 'is_up': True},
 #     # ...
 # }
-def remainingCharacters():
+
+def remainingCharacters(): #returns a list of characters that are still up
     remaining = []
     for i in range(len(characters)):
         if characters[i]['is_up'] == true:
             remaining.append(characters[i])
     return remaining
+
+def guessOrCheckTraits(): #asks the user if they want to guess a character or check for traits
+    a = input("Type g if you want to guess a character, type c if you want to check traits")
+    while a != 'g' or 'c':
+        if a == 'g':
+            pass
+        elif a == 'c':
+            pass
+        else:
+            print("invalid input, try again")
         
 
 # To create propositions, create classes for them first, annotated with "@proposition" and the Encoding
@@ -49,12 +60,9 @@ class IsUp(object):
 
 @proposition(E)
 class CheckTrait:
-    def __init__(self, person, guess1, guess2):
+    def __init__(self, person, guess):
         assert person in characters
-        a = [guess1, guess2]
-        b = [guess2, guess1]
-        assert a in questions
-        assert b in questions
+        assert guess in questions
         self.person = characters
         self.trait 
 
@@ -95,8 +103,7 @@ if __name__ == "__main__":
     # of your model:
     begin()
     print(remainingCharacters())
-    playerCharacter = input("Choose your character (capitalise first letter): ")
-    while playerCharacter not in characters:
-        playerCharacter = input("Invalid character, please try again: ")
-    botCharacter = characters[random.randint(1,24)]
+    characterChosen = input("Choose your character (capitalise first letter): ")
+    while characterChosen not in characters:
+        characterChosen = input("Invalid character, please try again: ")
     
