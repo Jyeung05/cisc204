@@ -17,19 +17,27 @@ Our project is a logical solver for the classic "Guess Who" game. Given a set of
 ## How to Run
 
 1. **Install Dependencies**:
+
    - Ensure you have Python installed.
    - Install the required packages:
+
      ```bash
      pip install bauhaus nnf
      pip install pysat
      ```
+
 2. **Run the Solver**:
+
    - Execute the main script:
+
      ```bash
      python run.py
      ```
+
    - When prompted, enter the name of the character for the program to guess (case-sensitive).
+
 3. **Output**:
+
    - The program will display the minimal number of questions needed.
    - It will list the questions to ask, each targeting specific traits.
 
@@ -40,5 +48,8 @@ Select a character for the program to guess (case sensitive): Alex
 
 Minimum number of questions needed: 2
 
-Questions to ask: Q5: Does your character have all of these traits: smiling, accessories? Q12: Does your character have all of these traits: black_hair, facial_hair?
+Questions to ask: 
+
+Q5: Does your character have all of these traits: smiling, accessories? 
+Q12: Does your character have all of these traits: black_hair, facial_hair?
 ```
