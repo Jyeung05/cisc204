@@ -48,9 +48,3 @@ questions = [
     ['female', 'blonde_hair'],           
     ['female', 'brown_hair'],            
 ]
-
-
-#robert + bernard + alfred
-#charles + david
-#max + philip
-#anita + maria
